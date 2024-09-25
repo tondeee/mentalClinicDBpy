@@ -36,13 +36,13 @@ class User:
         self.last_name = last_name
         self.username = username
         self.email = email
-        self._password = password
+        self.__password = password
         self.birth_date = birth_date
         self.id = id
         self.appointments = []
 
     def login(self, username, password):
-        return username == self.username and password == self._password
+        return username == self.username and password == self.__password
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -95,16 +95,28 @@ class Patient(User):
         return f"{super().__str__()}"
 
 
-# Demonstration
 if __name__ == "__main__":
     psychiatrist = Psychiatrist("John", "Doe", "johndoe", "john@clinic.com", "password123",
-                                date(1975, 5, 15), "Clinical Psychiatrist",  1)
+                                date(1975, 5, 15), "Clinical Psychiatrist", 1)
 
     patient = Patient("Jane", "Smith", "janesmith", "jane@email.com", "pass456",
                       date(1990, 8, 20), 2)
 
     print(psychiatrist)
     print(patient)
+
+
+    print("\nLogin attempts:")
+    psychiatrist_login_success = psychiatrist.login("johndoe", "password123")
+    print(f"Psychiatrist login success: {psychiatrist_login_success}")
+
+    patient_login_success = patient.login("janesmith", "pass456")
+    print(f"Patient login success: {patient_login_success}")
+
+
+    patient_login_fail = patient.login("janesmith", "wrongpassword")
+    print(f"Patient login success with wrong password: {patient_login_fail}")
+
 
     patient.add_diagnosis(MentalHealthIssue.ANXIETY)
     patient.add_diagnosis(MentalHealthIssue.DEPRESSION)
